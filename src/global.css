@@ -69,6 +69,18 @@
   @layer base {
     * {
       @apply border-border;
+
+      ::-webkit-scrollbar {
+        @apply w-1.5;
+      }
+    
+      ::-webkit-scrollbar-track {
+        @apply bg-background;
+      }
+    
+      ::-webkit-scrollbar-thumb {
+        @apply bg-muted rounded-lg;
+      }
     }
     body {
       @apply bg-background text-foreground antialiased;
