@@ -73,6 +73,7 @@ export function Task(props: TaskProps) {
     })
 
     setTodoList(updatedTodoList)
+    localStorage.setItem('@to-do-list-items', JSON.stringify(updatedTodoList))
   }
 
   function handleTaskTitleEdit(data: FormInputProps) {
