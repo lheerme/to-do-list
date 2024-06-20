@@ -1,3 +1,4 @@
+import { produce } from 'immer'
 import { Pencil, Trash2 } from 'lucide-react'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
@@ -65,23 +66,21 @@ export function ListHeader() {
       return
     }
 
-    const newSlug = generateSlug(newListTitle)
+    const newListSlug = generateSlug(newListTitle)
 
-    const newTodoList = todoList.map((todo) => {
-      if (todo.slug === listSlug) {
-        return {
-          ...todo,
-          slug: newSlug,
-          title: newListTitle,
-        }
-      }
-      return todo
+    const currentTodoIndex = todoList.findIndex((todo) => {
+      return todo.slug === listSlug
+    })
+
+    const newTodoList = produce(todoList, (draft) => {
+      draft[currentTodoIndex].title = newListTitle
+      draft[currentTodoIndex].slug = newListSlug
     })
 
     setTodoList(newTodoList)
     localStorage.setItem('@to-do-list-items', JSON.stringify(newTodoList))
     toast.success('Título da lista editado com sucesso')
-    navigate(`/list/${newSlug}`, { replace: true })
+    navigate(`/list/${newListSlug}`, { replace: true })
   }
 
   function handleListDelete() {

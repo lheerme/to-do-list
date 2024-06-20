@@ -1,3 +1,4 @@
+import { produce } from 'immer'
 import { Pencil, Trash2 } from 'lucide-react'
 import { ComponentProps, useContext } from 'react'
 import { useForm } from 'react-hook-form'
@@ -56,24 +57,24 @@ export function Task(props: TaskProps) {
     setError,
   } = useForm<FormInputProps>()
 
-  function handleCheckChange(id: string, isChecked: boolean | string) {
-    const updatedTodoList = todoList.map((todo) => {
-      if (todo.slug === listSlug) {
-        const newTaskList = todo.todoTasks.map((task) => {
-          if (task.id === id) {
-            return { ...task, isComplete: Boolean(isChecked) }
-          }
-          return task
-        })
+  const currentTodoIndex = todoList.findIndex((todo) => {
+    return todo.slug === listSlug
+  })
 
-        return { ...todo, todoTasks: newTaskList }
-      }
+  const currentTodoTasksIndex = todoList[currentTodoIndex].todoTasks.findIndex(
+    (task) => {
+      return task.id === id
+    },
+  )
 
-      return todo
+  function handleCheckChange(isChecked: boolean | string) {
+    const newTodoList = produce(todoList, (draft) => {
+      draft[currentTodoIndex].todoTasks[currentTodoTasksIndex].isComplete =
+        Boolean(isChecked)
     })
 
-    setTodoList(updatedTodoList)
-    localStorage.setItem('@to-do-list-items', JSON.stringify(updatedTodoList))
+    setTodoList(newTodoList)
+    localStorage.setItem('@to-do-list-items', JSON.stringify(newTodoList))
   }
 
   function handleTaskTitleEdit(data: FormInputProps) {
@@ -95,20 +96,9 @@ export function Task(props: TaskProps) {
       return
     }
 
-    const newTodoList = todoList.map((todo) => {
-      if (todo.slug === listSlug) {
-        const newTaskList = todo.todoTasks.map((task) => {
-          if (task.title === title) {
-            return { ...task, title: newTaskTitle }
-          }
-
-          return task
-        })
-
-        return { ...todo, todoTasks: newTaskList }
-      }
-
-      return todo
+    const newTodoList = produce(todoList, (draft) => {
+      draft[currentTodoIndex].todoTasks[currentTodoTasksIndex].title =
+        newTaskTitle
     })
 
     setTodoList(newTodoList)
@@ -117,14 +107,8 @@ export function Task(props: TaskProps) {
   }
 
   function handleTaskDelete() {
-    const newTodoList = todoList.map((todo) => {
-      if (todo.slug === listSlug) {
-        const newTaskList = todo.todoTasks.filter((task) => task.id !== id)
-
-        return { ...todo, todoTasks: newTaskList }
-      }
-
-      return todo
+    const newTodoList = produce(todoList, (draft) => {
+      draft[currentTodoIndex].todoTasks.splice(currentTodoTasksIndex, 1)
     })
 
     setTodoList(newTodoList)
@@ -155,7 +139,7 @@ export function Task(props: TaskProps) {
           <Checkbox
             id={`task-${id}`}
             checked={isComplete}
-            onCheckedChange={(checked) => handleCheckChange(id, checked)}
+            onCheckedChange={(checked) => handleCheckChange(checked)}
           />
           <h3 className="truncate text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             {title}

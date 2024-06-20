@@ -1,3 +1,4 @@
+import { produce } from 'immer'
 import { Plus } from 'lucide-react'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
@@ -51,14 +52,12 @@ export function List() {
       isComplete: false,
     }
 
-    const newTodoList = todoList.map((todo) => {
-      if (todo.slug === listSlug) {
-        return {
-          ...todo,
-          todoTasks: [...todo.todoTasks, newTask],
-        }
-      }
-      return todo
+    const currentTodoIndex = todoList.findIndex((todo) => {
+      return todo.slug === listSlug
+    })
+
+    const newTodoList = produce(todoList, (draft) => {
+      draft[currentTodoIndex].todoTasks.push(newTask)
     })
 
     setTodoList(newTodoList)
