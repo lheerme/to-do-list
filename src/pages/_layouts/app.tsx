@@ -1,17 +1,20 @@
 import { Link, Outlet } from 'react-router-dom'
 
-import { Header } from '@/components/Header'
-import { TodosContextProvider } from '@/contexts/TodosContexts'
+import { Header } from '@/components/header'
+import { LoadingPage } from '@/components/loading-page'
+import { useStore } from '@/store/use-store'
 
-export function AppLayouts() {
+export function AppLayout() {
+  const user = useStore((state) => state.user)
+
+  if (!user) return <LoadingPage />
+
   return (
-    <div className="h-[calc(100dvh_-_28px)] px-3 pt-3">
-      <div className="mx-auto flex h-full w-full max-w-2xl flex-col rounded-md ring-1 ring-border">
+    <div className="h-[calc(100dvh_-_28px)] md:px-3 md:pt-3">
+      <div className="mx-auto flex h-full w-full flex-col rounded-md md:max-w-2xl md:ring-1 md:ring-border">
         <Header />
-        <main className="h-[calc(100%_-_55px)] p-4">
-          <TodosContextProvider>
-            <Outlet />
-          </TodosContextProvider>
+        <main className="h-[calc(100%_-_55px)] md:p-4">
+          <Outlet />
         </main>
       </div>
       <footer className="py-1.5">

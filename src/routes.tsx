@@ -1,19 +1,44 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { AppLayouts } from '@/pages/_layouts/app'
-import { Home } from '@/pages/app/Home'
-import { List } from '@/pages/app/List'
+import { ProtectedRoute } from '@/components/protected-route'
+import { AppLayout } from '@/pages/_layouts/app'
+import { AuthLayout } from '@/pages/_layouts/auth'
+import { NotFound } from '@/pages/404'
+import { Dashboard } from '@/pages/app/dashboard/dashboard'
+import { ToDoDetails } from '@/pages/app/to-do-details/to-do-details'
+import { ConfirmeEmail } from '@/pages/auth/confirme-email'
+import { SignIn } from '@/pages/auth/sign-in'
+import { SignUp } from '@/pages/auth/sign-up'
+import { Error } from '@/pages/error'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <AppLayouts />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
+    errorElement: <Error />,
     children: [
-      { path: '/', element: <Home /> },
+      { path: '/dashboard', element: <Dashboard /> },
       {
-        path: '/list/:listSlug',
-        element: <List />,
+        path: '/list/:toDoId',
+        element: <ToDoDetails />,
       },
     ],
+  },
+  {
+    path: '/',
+    element: <AuthLayout />,
+    children: [
+      { path: '/sign-in', element: <SignIn /> },
+      { path: '/sign-up', element: <SignUp /> },
+      { path: '/confirme-email', element: <ConfirmeEmail /> },
+    ],
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ])

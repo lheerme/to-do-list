@@ -2,8 +2,9 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/icon.ico" type="ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To-Do List</title>
+    <title>to-do list</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -11,5 +12,68 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: sans-serif;
+        }
+    
+        body {
+          background: #09090b;
+          color: #ffffff;
+        }
+    
+        .container {
+          width: 100%;
+          height: 100vh;
+          height: 100dvh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 8px;
+        }
+        
+        .error {
+          font-size: 1.5rem;
+          max-width: 450px;
+          text-align: center;
+          padding: 16px;
+          font-weight: 500;
+        }
+    
+        .text-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          height: 100%;
+        }
+    
+        .footer {
+          font-weight: 500;
+          text-align: center;
+          font-size: 0.875rem;
+        }
+    
+        a {
+          color: #ffffff;
+        }
+      </style>
+      <div class="container">
+        <div class="text-container">
+          <p class="error">
+            Está site precisa do Javascript habilitado para funcionar ¯\_(ツ)_/¯
+          </p>
+        </div>
+        <footer class="footer">
+          © 2024 -
+          <a href="https://github.com/lheerme" target="_blank"> Guilherme Souza </a>
+          . Todos os direitos reservados.
+        </footer>
+      </div>
+    </noscript>
   </body>
 </html>
