@@ -35,7 +35,7 @@ export function DeletoToDoAlertDialog() {
         )
       }
 
-      navigate(`/`, { replace: true })
+      navigate(`/dashboard`, { replace: true })
       toast.success(`To-do apagado com sucesso`)
     },
     onError: () => {
