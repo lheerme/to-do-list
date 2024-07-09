@@ -41,7 +41,8 @@ export function ToDoTaskList() {
           ))}
           {!toDoTasks?.length && (
             <p className="mx-auto text-center">
-              Você não possui nenhuma tarefa, clique em nova tarefa para criar.
+              Você não possui nenhuma tarefa, clique em adicionar para criar uma
+              nova tarefa.
             </p>
           )}
         </>

@@ -53,7 +53,7 @@ export function DeletoToDoAlertDialog() {
         <AlertDialogTitle>Tem certeza que deseja deletar?</AlertDialogTitle>
         <AlertDialogDescription>
           Esta ação não poderá ser desfeita. Isso vai permanentemente deletar
-          esta lista.
+          este to-do.
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>

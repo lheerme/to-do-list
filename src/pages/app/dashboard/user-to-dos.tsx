@@ -38,7 +38,7 @@ export function UserToDos() {
           ))}
           {!userToDos?.length && (
             <p className="mx-auto text-center">
-              Você não possui nenhuma lista, clique em nova lista para criar.
+              Você não possui nenhum to-do, clique em novo to-do para criar.
             </p>
           )}
         </>
