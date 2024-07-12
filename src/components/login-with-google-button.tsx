@@ -30,6 +30,7 @@ export function LoginWithGoogleButton() {
       type="submit"
       disabled={isLoginWithGooglePending || isLoggingIn}
       onClick={handleSignInWithGoogle}
+      className="w-full"
     >
       {isLoginWithGooglePending ? (
         <LoaderCircle className="size-[1.2rem] animate-spin" />

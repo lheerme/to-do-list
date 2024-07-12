@@ -30,6 +30,7 @@ export function LoginWithGithubButton() {
       type="submit"
       disabled={isLoginWithGithubPending || isLoggingIn}
       onClick={handleSignInWithGithub}
+      className="w-full"
     >
       {isLoginWithGithubPending ? (
         <LoaderCircle className="size-[1.2rem] animate-spin" />

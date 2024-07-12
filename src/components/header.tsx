@@ -26,20 +26,20 @@ export function Header() {
 
   return (
     <header className="h-14 w-full border-b">
-      <Helmet titleTemplate={`%s | ${userInfo?.user_name ?? 'to-do app'}`} />
+      <Helmet titleTemplate={`%s | ${userInfo?.name ?? 'to-do app'}`} />
       <div className="flex h-full items-center justify-between gap-6 p-3">
         {isFetching ? (
           <UserInfoSkeleton />
         ) : (
           <Link
             to={'/dashboard'}
-            title={userInfo?.user_name}
+            title={userInfo?.name}
             className="flex items-center gap-2 truncate"
           >
             <ClipboardList className="size-6" />
             <Separator orientation="vertical" className="h-8" />
             <h1 className="w-full truncate text-sm font-medium min-[460px]:text-base">
-              {userInfo?.user_name}
+              {userInfo?.name}
               <span className="hidden min-[460px]:inline"> | to-do list</span>
             </h1>
           </Link>

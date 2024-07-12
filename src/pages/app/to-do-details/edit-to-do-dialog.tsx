@@ -32,7 +32,13 @@ const newTitleFormSchema = z.object({
 
 type NewTitleFormSchema = z.infer<typeof newTitleFormSchema>
 
-export function EditToDoDialog() {
+interface EditToDoDialogProps {
+  setIsEditToDoDialogOpen: (arg0: boolean) => void
+}
+
+export function EditToDoDialog({
+  setIsEditToDoDialogOpen,
+}: EditToDoDialogProps) {
   const user = useStore((state) => state.user)
   const { toDoId } = useParams() as { toDoId: string }
   const queryClient = useQueryClient()
@@ -95,6 +101,7 @@ export function EditToDoDialog() {
         )
       }
 
+      setIsEditToDoDialogOpen(false)
       toast.success('Título atualizado')
     },
     onError: (error, variables) => {

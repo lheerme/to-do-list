@@ -30,7 +30,13 @@ const newToDoFormSchema = z.object({
 
 type NewToDoFormSchema = z.infer<typeof newToDoFormSchema>
 
-export function AddNewToDoDialog() {
+interface AddNewToDoDialogProps {
+  setIsAddNewToDoDialogOpen: (arg0: boolean) => void
+}
+
+export function AddNewToDoDialog({
+  setIsAddNewToDoDialogOpen,
+}: AddNewToDoDialogProps) {
   const user = useStore((state) => state.user)
   const queryClient = useQueryClient()
 
@@ -61,6 +67,7 @@ export function AddNewToDoDialog() {
         },
       )
       toast.success('To-do criado com sucesso')
+      setIsAddNewToDoDialogOpen(false)
       resetField('title')
     },
     onError: (error, variables) => {

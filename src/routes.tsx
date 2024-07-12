@@ -6,7 +6,6 @@ import { AuthLayout } from '@/pages/_layouts/auth'
 import { NotFound } from '@/pages/404'
 import { Dashboard } from '@/pages/app/dashboard/dashboard'
 import { ToDoDetails } from '@/pages/app/to-do-details/to-do-details'
-import { ConfirmeEmail } from '@/pages/auth/confirme-email'
 import { SignIn } from '@/pages/auth/sign-in'
 import { SignUp } from '@/pages/auth/sign-up'
 import { Error } from '@/pages/error'
@@ -34,7 +33,6 @@ export const router = createBrowserRouter([
     children: [
       { path: '/sign-in', element: <SignIn /> },
       { path: '/sign-up', element: <SignUp /> },
-      { path: '/confirme-email', element: <ConfirmeEmail /> },
     ],
   },
   {

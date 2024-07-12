@@ -1,4 +1,4 @@
 export interface UserInfo {
-  user_name: string
+  name: string
   profile_pic: string
 }

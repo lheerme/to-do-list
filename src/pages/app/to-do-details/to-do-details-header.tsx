@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Pencil, Trash2 } from 'lucide-react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
@@ -14,6 +15,7 @@ import { useStore } from '@/store/use-store'
 export function ToDoDetailsHeader() {
   const user = useStore((state) => state.user)
   const { toDoId } = useParams() as { toDoId: string }
+  const [isEditToDoDialogOpen, setIsEditToDoDialogOpen] = useState(false)
 
   const { data: toDoDetails, isFetching } = useQuery({
     queryKey: ['user-to-do-detail', toDoId],
@@ -39,14 +41,17 @@ export function ToDoDetailsHeader() {
       )}
       <div className="ml-auto flex items-center gap-2">
         {/* Editar */}
-        <Dialog>
+        <Dialog
+          open={isEditToDoDialogOpen}
+          onOpenChange={setIsEditToDoDialogOpen}
+        >
           <DialogTrigger asChild>
             <Button variant="ghost" size="icon" disabled={isFetching}>
               <Pencil className="h-[1.2rem] w-[1.2rem]" />
             </Button>
           </DialogTrigger>
 
-          <EditToDoDialog />
+          <EditToDoDialog setIsEditToDoDialogOpen={setIsEditToDoDialogOpen} />
         </Dialog>
         {/* Deletar */}
         <AlertDialog>

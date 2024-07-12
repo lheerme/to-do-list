@@ -4,7 +4,7 @@ import { supabase } from '@/utils/supabase'
 export async function getUserInfo(userId: string): Promise<UserInfo> {
   const { data, error } = await supabase
     .from('users')
-    .select('user_name, profile_pic')
+    .select('name, profile_pic')
     .eq('user_id', userId)
 
   if (error) {

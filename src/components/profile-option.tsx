@@ -1,17 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { LogOut, UserCog } from 'lucide-react'
-import { useState } from 'react'
+import { LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
-import { EditProfileDialog } from '@/components/edit-profile-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -23,7 +19,6 @@ export function ProfileOption() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const user = useStore((state) => state.user)
-  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false)
 
   const { data: userInfo, isFetching } = useQuery({
     queryKey: ['user-info', user],
@@ -70,21 +65,12 @@ export function ProfileOption() {
                 className="object-cover"
               />
               <AvatarFallback>
-                {userInfo?.user_name.charAt(0).toUpperCase()}
+                {userInfo?.name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           )}
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-48" align="end">
-          <DropdownMenuLabel>Meu perfil</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => setIsEditProfileOpen(true)}
-            className="cursor-pointer"
-          >
-            <UserCog className="mr-2 h-4 w-4" />
-            <span>Editar perfil</span>
-          </DropdownMenuItem>
+        <DropdownMenuContent className="w-32" align="end">
           <DropdownMenuItem
             onClick={handleSignOut}
             disabled={isPending}
@@ -95,10 +81,6 @@ export function ProfileOption() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <EditProfileDialog
-        isEditProfileOpen={isEditProfileOpen}
-        setIsEditProfileOpen={setIsEditProfileOpen}
-      />
     </>
   )
 }
