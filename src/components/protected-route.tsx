@@ -18,7 +18,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     if (!isLoading) {
       if (user) {
         setUser(user)
-        navigate('/dashboard')
+        navigate('/dashboard', { replace: true })
       } else {
         setUser(null)
       }
