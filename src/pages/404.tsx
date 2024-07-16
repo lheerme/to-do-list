@@ -6,7 +6,7 @@ export function NotFound() {
       <h1 className="text-center text-4xl font-bold">Página não encontrada</h1>
       <p className="text-accent-foreground">
         Voltar para o{' '}
-        <Link to="/" className="text-violet-600 dark:text-violet-400">
+        <Link to="/dashboard" className="text-violet-600 dark:text-violet-400">
           Dashboard
         </Link>
       </p>

@@ -7,7 +7,7 @@ export function AuthLayout() {
   return (
     <div className="grid min-h-dvh lg:grid-cols-2">
       <div className="border-bg-muted hidden w-full flex-col justify-between border-r p-10 lg:flex">
-        <Link to={'/'} className="flex w-fit items-center gap-2">
+        <Link to={'/dashboard'} className="flex w-fit items-center gap-2">
           <ClipboardList className="size-6" />
           <Separator orientation="vertical" className="h-8" />
           <h1 className="font-medium">to-do list</h1>
