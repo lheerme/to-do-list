@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { LoaderCircle } from 'lucide-react'
+import { produce } from 'immer'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { twMerge } from 'tailwind-merge'
 import { z } from 'zod'
+import { useShallow } from 'zustand/react/shallow'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -15,8 +15,6 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ToDoTask } from '@/interfaces/to-do-task'
-import { EditTaskTitle } from '@/services/edit-task-title'
 import { useStore } from '@/store/use-store'
 
 const newTaskFormSchema = z.object({
@@ -31,20 +29,24 @@ const newTaskFormSchema = z.object({
 
 type NewTaskFormSchema = z.infer<typeof newTaskFormSchema>
 
-interface EditTaskDialogProps {
+interface EditTaskDialogAnonymousProps {
   title: string
   id: string
   setIsEditTaskDialogOpen: (arg0: boolean) => void
 }
 
-export function EditTaskDialog({
+export function EditTaskDialogAnonymous({
   title,
   id,
   setIsEditTaskDialogOpen,
-}: EditTaskDialogProps) {
-  const user = useStore((state) => state.user)
+}: EditTaskDialogAnonymousProps) {
   const { toDoId } = useParams() as { toDoId: string }
-  const queryClient = useQueryClient()
+  const { anonToDos, setAnonToDos } = useStore(
+    useShallow((state) => ({
+      anonToDos: state.anonToDos,
+      setAnonToDos: state.setAnonToDos,
+    })),
+  )
 
   const {
     register,
@@ -55,46 +57,35 @@ export function EditTaskDialog({
     resolver: zodResolver(newTaskFormSchema),
   })
 
-  const {
-    mutateAsync: editTaskTitleMutation,
-    isPending: isEditTaskTitlePending,
-  } = useMutation({
-    mutationFn: EditTaskTitle,
-    onSuccess: (_, { taskId, newTitle }) => {
-      queryClient.setQueryData(
-        ['to-do-tasks', toDoId],
-        (currentData: ToDoTask[]) => {
-          return currentData.map((task) => {
-            if (task.id === taskId) {
-              return { ...task, title: newTitle }
-            }
+  const currentAnonToDo = anonToDos.find((toDo) => toDo.id === toDoId)
 
-            return task
-          })
-        },
-      )
+  function handleTaskTitleEdit(data: NewTaskFormSchema) {
+    const { newTitle } = data
+    if (newTitle === title) return
 
-      setIsEditTaskDialogOpen(false)
-      toast.success('Título atualizado')
-    },
-    onError: (error, variables) => {
-      if (error.message === '23505') {
-        setError('newTitle', { type: 'custom', message: 'Título duplicado' })
-        toast.warning(`A task ${variables.newTitle} já existe`)
-      } else {
-        toast.warning(`Erro ao atualizar título`)
-      }
-    },
-  })
+    const isDuplicated = currentAnonToDo?.tasks
+      .map((task) => task.title.toLowerCase())
+      .includes(newTitle.toLowerCase())
 
-  async function handleTaskTitleEdit(data: NewTaskFormSchema) {
-    if (data.newTitle === title) return
+    if (isDuplicated) {
+      setError('newTitle', { type: 'custom', message: 'Título duplicado' })
+      toast.warning(`A task ${newTitle} já existe`)
+      return
+    }
 
-    await editTaskTitleMutation({
-      newTitle: data.newTitle,
-      user_id: user!.id,
-      taskId: id,
+    const anonToDoIndex = anonToDos.findIndex((toDo) => toDo.id === toDoId)
+    const anonTaskIndex = anonToDos[anonToDoIndex].tasks.findIndex(
+      (task) => task.id === id,
+    )
+
+    const newAnonToDos = produce(anonToDos, (draft) => {
+      draft[anonToDoIndex].tasks[anonTaskIndex].title = newTitle
     })
+
+    setAnonToDos(newAnonToDos)
+    setIsEditTaskDialogOpen(false)
+    toast.success('Título atualizado')
+    localStorage.setItem('@anon-to-do-list-items', JSON.stringify(newAnonToDos))
   }
 
   return (
@@ -119,7 +110,6 @@ export function EditTaskDialog({
               )}
               autoComplete="off"
               defaultValue={title}
-              disabled={isEditTaskTitlePending}
             />
             {errors.newTitle && (
               <span
@@ -133,16 +123,8 @@ export function EditTaskDialog({
             )}
           </div>
         </div>
-        <Button
-          type="submit"
-          className="ml-auto block w-full"
-          disabled={isEditTaskTitlePending}
-        >
-          {isEditTaskTitlePending ? (
-            <LoaderCircle className="mx-auto size-[1.2rem] animate-spin" />
-          ) : (
-            'Salvar alteração'
-          )}
+        <Button type="submit" className="ml-auto block w-full">
+          Salvar alteração
         </Button>
       </form>
     </DialogContent>

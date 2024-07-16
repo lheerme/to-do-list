@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { produce } from 'immer'
 import { Pencil, Trash2 } from 'lucide-react'
 import { ComponentProps, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { toast } from 'sonner'
 import { twMerge } from 'tailwind-merge'
+import { useShallow } from 'zustand/react/shallow'
 
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
@@ -11,76 +11,38 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { ToDoTask as ToDoTaskInterface } from '@/interfaces/to-do-task'
-import { DeleteTaskAlertDialog } from '@/pages/app/to-do-details/delete-task-alert-dialog'
-import { EditTaskDialog } from '@/pages/app/to-do-details/edit-task-dialog'
-import { EditTaskState } from '@/services/edit-task-state'
+import { DeleteTaskAlertDialogAnonymous } from '@/pages/app/to-do-details/anonymous/delete-task-alert-dialog-anonymous'
+import { EditTaskDialogAnonymous } from '@/pages/app/to-do-details/anonymous/edit-task-dialog-anonymous'
 import { useStore } from '@/store/use-store'
 
-interface ToDoTaskProps extends ComponentProps<'div'> {
+interface ToDoTaskAnonymousProps extends ComponentProps<'div'> {
   id: string
   title: string
   isCompleted: boolean
 }
 
-export function ToDoTask(props: ToDoTaskProps) {
+export function ToDoTaskAnonymous(props: ToDoTaskAnonymousProps) {
   const { id, title, isCompleted, ...rest } = props
-  const user = useStore((state) => state.user)
   const { toDoId } = useParams() as { toDoId: string }
-  const queryClient = useQueryClient()
+  const { anonToDos, setAnonToDos } = useStore(
+    useShallow((state) => ({
+      anonToDos: state.anonToDos,
+      setAnonToDos: state.setAnonToDos,
+    })),
+  )
   const [isEditTaskDialogOpen, setIsEditTaskDialogOpen] = useState(false)
 
-  function UpdateTaskStateCache({
-    taskId,
-    newState,
-  }: {
-    taskId: string
-    newState: boolean
-  }) {
-    const cached = queryClient.getQueryData<ToDoTaskInterface[]>([
-      'to-do-tasks',
-      toDoId,
-    ])
+  function handleCheckChange(isChecked: boolean) {
+    const anonToDoIndex = anonToDos.findIndex((toDo) => toDo.id === toDoId)
+    const anonTaskIndex = anonToDos[anonToDoIndex].tasks.findIndex(
+      (task) => task.id === id,
+    )
 
-    if (cached) {
-      queryClient.setQueryData(['to-do-tasks', toDoId], () => {
-        return cached.map((task) => {
-          if (task.id === taskId) {
-            return { ...task, isCompleted: newState }
-          }
-
-          return task
-        })
-      })
-    }
-
-    return { cached }
-  }
-
-  const {
-    mutateAsync: editTaskStateMutation,
-    isPending: isEditTaskStateMutationPending,
-  } = useMutation({
-    mutationFn: EditTaskState,
-    onMutate: ({ taskId, newState }) => {
-      const { cached } = UpdateTaskStateCache({ taskId, newState })
-
-      return { prevCache: cached }
-    },
-    onError: (_, __, context) => {
-      if (context?.prevCache) {
-        queryClient.setQueryData(['to-do-tasks', toDoId], context.prevCache)
-      }
-      toast.warning('Erro ao executar ação')
-    },
-  })
-
-  async function handleCheckChange(isChecked: boolean) {
-    await editTaskStateMutation({
-      newState: isChecked,
-      taskId: id,
-      user_id: user!.id,
+    const newAnonToDos = produce(anonToDos, (draft) => {
+      draft[anonToDoIndex].tasks[anonTaskIndex].isCompleted = isChecked
     })
+
+    setAnonToDos(newAnonToDos)
   }
 
   return (
@@ -105,7 +67,6 @@ export function ToDoTask(props: ToDoTaskProps) {
           <Checkbox
             id={id}
             checked={isCompleted}
-            disabled={isEditTaskStateMutationPending}
             onCheckedChange={(checked) => handleCheckChange(Boolean(checked))}
           />
           <h3 className="truncate text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -136,15 +97,12 @@ export function ToDoTask(props: ToDoTaskProps) {
             onOpenChange={setIsEditTaskDialogOpen}
           >
             <DialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={isCompleted || isEditTaskStateMutationPending}
-              >
+              <Button variant="ghost" size="icon">
                 <Pencil className="h-4 w-4" />
               </Button>
             </DialogTrigger>
-            <EditTaskDialog
+
+            <EditTaskDialogAnonymous
               title={title}
               id={id}
               setIsEditTaskDialogOpen={setIsEditTaskDialogOpen}
@@ -153,15 +111,12 @@ export function ToDoTask(props: ToDoTaskProps) {
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={isCompleted || isEditTaskStateMutationPending}
-              >
+              <Button variant="ghost" size="icon">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </AlertDialogTrigger>
-            <DeleteTaskAlertDialog id={id} />
+
+            <DeleteTaskAlertDialogAnonymous id={id} />
           </AlertDialog>
         </div>
       </div>

@@ -1,10 +1,10 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
-import { LoginWithGithubButton } from '@/components/login-with-github-button'
-import { LoginWithGoogleButton } from '@/components/login-with-google-button'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { LoginWithGithubButton } from '@/pages/auth/login-with-github-button'
+import { LoginWithGoogleButton } from '@/pages/auth/login-with-google-button'
 
 export function SignUp() {
   return (

@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { DeletoToDoAlertDialog } from '@/pages/app/to-do-details/delete-to-do-alert-dialog'
+import { DeleteToDoAlertDialog } from '@/pages/app/to-do-details/delete-to-do-alert-dialog'
 import { EditToDoDialog } from '@/pages/app/to-do-details/edit-to-do-dialog'
 import { ToDoDetailsHeaderTitleSkeleton } from '@/pages/app/to-do-details/to-do-details-header-title-skeleton'
 import { getToDoDetails } from '@/services/get-to-do-details'
@@ -28,7 +28,6 @@ export function ToDoDetailsHeader() {
 
   return (
     <div className="flex items-center gap-2 px-4 pt-4 md:px-0 md:pt-0">
-      {/* Título */}
       {isFetching ? (
         <ToDoDetailsHeaderTitleSkeleton />
       ) : (
@@ -40,7 +39,6 @@ export function ToDoDetailsHeader() {
         </h2>
       )}
       <div className="ml-auto flex items-center gap-2">
-        {/* Editar */}
         <Dialog
           open={isEditToDoDialogOpen}
           onOpenChange={setIsEditToDoDialogOpen}
@@ -53,7 +51,6 @@ export function ToDoDetailsHeader() {
 
           <EditToDoDialog setIsEditToDoDialogOpen={setIsEditToDoDialogOpen} />
         </Dialog>
-        {/* Deletar */}
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="ghost" size="icon" disabled={isFetching}>
@@ -61,7 +58,7 @@ export function ToDoDetailsHeader() {
             </Button>
           </AlertDialogTrigger>
 
-          <DeletoToDoAlertDialog />
+          <DeleteToDoAlertDialog />
         </AlertDialog>
       </div>
     </div>

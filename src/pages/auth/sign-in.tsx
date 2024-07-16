@@ -1,10 +1,11 @@
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 
-import { LoginWithGithubButton } from '@/components/login-with-github-button'
-import { LoginWithGoogleButton } from '@/components/login-with-google-button'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { EnterAnonymously } from '@/pages/auth/enter-anonymously'
+import { LoginWithGithubButton } from '@/pages/auth/login-with-github-button'
+import { LoginWithGoogleButton } from '@/pages/auth/login-with-google-button'
 
 export function SignIn() {
   return (
@@ -28,12 +29,13 @@ export function SignIn() {
         </div>
 
         <LoginWithGithubButton />
+        <LoginWithGoogleButton />
         <div className="flex items-center justify-between">
           <Separator orientation="horizontal" className="h-0.5 w-2/5" />
           <span className="text-sm text-muted-foreground">ou</span>
           <Separator orientation="horizontal" className="h-0.5 w-2/5" />
         </div>
-        <LoginWithGoogleButton />
+        <EnterAnonymously />
       </div>
     </div>
   )

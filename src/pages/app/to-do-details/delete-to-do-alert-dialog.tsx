@@ -15,7 +15,7 @@ import { UserToDos } from '@/interfaces/user-to-dos'
 import { DeleteToDo } from '@/services/delete-to-do'
 import { useStore } from '@/store/use-store'
 
-export function DeletoToDoAlertDialog() {
+export function DeleteToDoAlertDialog() {
   const user = useStore((state) => state.user)
   const { toDoId } = useParams() as { toDoId: string }
   const navigate = useNavigate()

@@ -28,7 +28,6 @@ export function ToDoDetails() {
     <div className="flex h-full flex-col gap-4">
       <Helmet title={toDoDetails?.title ?? 'Carregando...'} />
       <ToDoDetailsHeader />
-      {/* LISTA DAS TAREFAS */}
       <AddNewTaskForm />
       <ToDoTaskList />
     </div>

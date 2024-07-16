@@ -27,7 +27,6 @@ export function LoginWithGithubButton() {
 
   return (
     <Button
-      type="submit"
       disabled={isLoginWithGithubPending || isLoggingIn}
       onClick={handleSignInWithGithub}
       className="w-full"

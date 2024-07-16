@@ -27,7 +27,6 @@ export function LoginWithGoogleButton() {
 
   return (
     <Button
-      type="submit"
       disabled={isLoginWithGooglePending || isLoggingIn}
       onClick={handleSignInWithGoogle}
       className="w-full"

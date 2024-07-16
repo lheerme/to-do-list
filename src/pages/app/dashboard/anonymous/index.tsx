@@ -4,18 +4,11 @@ import { Helmet } from 'react-helmet-async'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { AddNewToDoDialog } from '@/pages/app/dashboard/add-new-to-do-dialog'
-import { AnonymousDashboard } from '@/pages/app/dashboard/anonymous'
-import { UserToDos } from '@/pages/app/dashboard/user-to-dos'
-import { useStore } from '@/store/use-store'
+import { AddNewToDoDialogAnonymous } from '@/pages/app/dashboard/anonymous/add-new-to-do-dialog-anonymous'
+import { UserToDosAnonymous } from '@/pages/app/dashboard/anonymous/user-to-dos-anonymous'
 
-export function Dashboard() {
-  const isAnon = useStore((state) => state.isAnon)
+export function AnonymousDashboard() {
   const [isAddNewToDoDialogOpen, setIsAddNewToDoDialogOpen] = useState(false)
-
-  if (isAnon) {
-    return <AnonymousDashboard />
-  }
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -34,13 +27,13 @@ export function Dashboard() {
             </Button>
           </DialogTrigger>
 
-          <AddNewToDoDialog
+          <AddNewToDoDialogAnonymous
             setIsAddNewToDoDialogOpen={setIsAddNewToDoDialogOpen}
           />
         </Dialog>
       </div>
 
-      <UserToDos />
+      <UserToDosAnonymous />
     </div>
   )
 }

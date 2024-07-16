@@ -36,7 +36,7 @@ export function Header() {
             title={userInfo?.name}
             className="flex items-center gap-2 truncate"
           >
-            <ClipboardList className="size-6" />
+            <ClipboardList className="size-6 shrink-0" />
             <Separator orientation="vertical" className="h-8" />
             <h1 className="w-full truncate text-sm font-medium min-[460px]:text-base">
               {userInfo?.name}
