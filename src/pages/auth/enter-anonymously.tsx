@@ -17,6 +17,7 @@ import { useStore } from '@/store/use-store'
 
 export function EnterAnonymously() {
   const setIsAnon = useStore((state) => state.setIsAnon)
+  const isLoggingIn = useStore((state) => state.isLoggingIn)
   const navigate = useNavigate()
 
   function handleEnterAnonymously() {
@@ -28,7 +29,7 @@ export function EnterAnonymously() {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button className="w-full" variant="secondary">
+          <Button className="w-full" variant="secondary" disabled={isLoggingIn}>
             <UserX className="mr-2 h-[1.3rem] w-[1.3rem]" />{' '}
             <span className="pt-0.5">Entrar anonimamente</span>
           </Button>
