@@ -71,7 +71,7 @@
       @apply border-border;
 
       ::-webkit-scrollbar {
-        @apply w-1.5;
+        @apply w-1 h-1;
       }
     
       ::-webkit-scrollbar-track {

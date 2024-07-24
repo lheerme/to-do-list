@@ -9,6 +9,7 @@ export function UserToDosAnonymous() {
       {anonToDos?.map((todo) => (
         <ToDoLink
           key={todo.id}
+          id={todo.id}
           title={todo.title}
           to={`/anon-list/${todo.id}`}
         />

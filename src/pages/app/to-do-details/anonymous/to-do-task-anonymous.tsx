@@ -76,11 +76,11 @@ export function ToDoTaskAnonymous(props: ToDoTaskAnonymousProps) {
 
         <div
           className={twMerge(
-            'ml-auto flex items-center sm:gap-2',
+            'ml-auto flex items-center sm:gap-1',
             isCompleted ? 'pointer-events-none' : 'null',
           )}
         >
-          <div className="mr-2 flex items-center gap-2 sm:mr-0">
+          <div className="mr-4 flex items-center gap-2 sm:mr-2">
             <div
               className={twMerge(
                 'size-2 rounded-full',

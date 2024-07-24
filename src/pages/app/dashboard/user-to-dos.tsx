@@ -21,7 +21,7 @@ export function UserToDos() {
   return (
     <div
       className={twMerge(
-        'h-full space-y-1 overflow-y-auto pt-3',
+        'h-full space-y-1 overflow-y-auto',
         isFetching && 'space-y-2',
       )}
     >
@@ -32,6 +32,7 @@ export function UserToDos() {
           {userToDos?.map((todo) => (
             <ToDoLink
               key={todo.id}
+              id={todo.id}
               title={todo.title}
               to={`/list/${todo.id}`}
             />

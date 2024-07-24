@@ -8,9 +8,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useMediaQuery } from '@/hooks/use-media-query'
 import { getUserInfo } from '@/services/get-user-info'
 import { signOut } from '@/services/sign-out'
 import { useStore } from '@/store/use-store'
@@ -18,6 +21,7 @@ import { useStore } from '@/store/use-store'
 export function ProfileOption() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const isDesktop = useMediaQuery('(min-width: 768px)')
   const user = useStore((state) => state.user)
 
   const { data: userInfo, isFetching } = useQuery({
@@ -58,19 +62,41 @@ export function ProfileOption() {
               <Skeleton className="size-9 rounded-full min-[460px]:size-10" />
             </>
           ) : (
-            <Avatar className="size-9 min-[460px]:size-10">
-              <AvatarImage
-                src={userInfo?.profile_pic}
-                alt="profile picture"
-                className="object-cover"
-              />
-              <AvatarFallback>
-                {userInfo?.name.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+            <button className="flex w-fit items-center gap-2">
+              {isDesktop ? (
+                <>
+                  <Avatar className="size-9 min-[460px]:size-10">
+                    <AvatarImage
+                      src={userInfo?.profile_pic}
+                      alt="profile picture"
+                      className="object-cover"
+                    />
+                    <AvatarFallback>
+                      {userInfo?.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="truncate text-sm font-medium">
+                    Meu perfil
+                  </span>
+                </>
+              ) : (
+                <Avatar className="size-9 min-[460px]:size-10">
+                  <AvatarImage
+                    src={userInfo?.profile_pic}
+                    alt="profile picture"
+                    className="object-cover"
+                  />
+                  <AvatarFallback>
+                    {userInfo?.name.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+            </button>
           )}
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-32" align="end">
+        <DropdownMenuContent align="center">
+          <DropdownMenuLabel>{userInfo?.name}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={handleSignOut}
             disabled={isPending}

@@ -1,21 +1,33 @@
 import { Link, Outlet } from 'react-router-dom'
+import { twMerge } from 'tailwind-merge'
 
 import { Header } from '@/components/header'
 import { HeaderAnonymous } from '@/components/header-anonymous'
 import { LoadingPage } from '@/components/loading-page'
+import { useMediaQuery } from '@/hooks/use-media-query'
 import { useStore } from '@/store/use-store'
 
 export function AppLayout() {
   const user = useStore((state) => state.user)
+  const isDesktop = useMediaQuery('(min-width: 768px)')
   const isAnon = useStore((state) => state.isAnon)
 
   if (!user && !isAnon) return <LoadingPage />
 
   return (
     <div className="h-[calc(100dvh_-_28px)] md:px-3 md:pt-3">
-      <div className="mx-auto flex h-full w-full flex-col rounded-md md:max-w-2xl md:ring-1 md:ring-border">
+      <div
+        className={twMerge(
+          'mx-auto flex h-full w-full rounded-md md:ring-1 md:ring-border',
+          isDesktop ? 'max-w-7xl' : 'flex-col',
+        )}
+      >
         {isAnon ? <HeaderAnonymous /> : <Header />}
-        <main className="h-[calc(100%_-_55px)] md:p-4">
+        <main
+          className={twMerge(
+            isDesktop ? 'w-full p-2 md:p-10' : 'h-[calc(100%_-_55px)]',
+          )}
+        >
           <Outlet />
         </main>
       </div>
