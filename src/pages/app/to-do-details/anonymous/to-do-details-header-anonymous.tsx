@@ -21,6 +21,7 @@ export function ToDoDetailsHeaderAnonymous() {
       <h2
         title={currentAnonToDo?.title}
         className="cursor-default truncate text-xl font-bold tracking-tight"
+        data-test="to-do-details-title"
       >
         {currentAnonToDo?.title}
       </h2>
@@ -31,7 +32,11 @@ export function ToDoDetailsHeaderAnonymous() {
           onOpenChange={setIsEditToDoDialogOpen}
         >
           <DialogTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button
+              variant="ghost"
+              size="icon"
+              data-test="edit-to-do-title-btn"
+            >
               <Pencil className="h-[1.2rem] w-[1.2rem]" />
             </Button>
           </DialogTrigger>
@@ -43,7 +48,11 @@ export function ToDoDetailsHeaderAnonymous() {
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button
+              variant="ghost"
+              size="icon"
+              data-test="delete-to-do-title-btn"
+            >
               <Trash2 className="h-[1.2rem] w-[1.2rem]" />
             </Button>
           </AlertDialogTrigger>

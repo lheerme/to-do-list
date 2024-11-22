@@ -20,7 +20,10 @@ export function SignIn() {
       </Button>
       <div className="mx-auto w-full max-w-96 space-y-6">
         <div className="flex flex-col items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1
+            data-test="sign-in-title"
+            className="text-2xl font-semibold tracking-tight"
+          >
             Acessar to-dos
           </h1>
           <p className="text-center text-sm text-muted-foreground">

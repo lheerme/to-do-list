@@ -29,7 +29,12 @@ export function EnterAnonymously() {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button className="w-full" variant="secondary" disabled={isLoggingIn}>
+          <Button
+            className="w-full"
+            variant="secondary"
+            disabled={isLoggingIn}
+            data-test="sign-in-anon-btn"
+          >
             <UserX className="mr-2 h-[1.3rem] w-[1.3rem]" />{' '}
             <span className="pt-0.5">Entrar anonimamente</span>
           </Button>

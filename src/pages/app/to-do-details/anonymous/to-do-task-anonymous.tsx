@@ -68,6 +68,7 @@ export function ToDoTaskAnonymous(props: ToDoTaskAnonymousProps) {
             id={id}
             checked={isCompleted}
             onCheckedChange={(checked) => handleCheckChange(Boolean(checked))}
+            data-test="task-checkbox"
           />
           <h3 className="truncate text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             {title}
@@ -97,7 +98,7 @@ export function ToDoTaskAnonymous(props: ToDoTaskAnonymousProps) {
             onOpenChange={setIsEditTaskDialogOpen}
           >
             <DialogTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" data-test="edit-task-btn">
                 <Pencil className="h-4 w-4" />
               </Button>
             </DialogTrigger>
@@ -111,7 +112,7 @@ export function ToDoTaskAnonymous(props: ToDoTaskAnonymousProps) {
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" data-test="delete-task-btn">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </AlertDialogTrigger>

@@ -112,6 +112,7 @@ export function EditToDoDialogAnonymous({
                 errors.newTitle?.type === 'custom' && 'border-orange-500',
               )}
               autoComplete="off"
+              data-test="edit-to-do-title-input"
             />
             {errors.newTitle && (
               <span

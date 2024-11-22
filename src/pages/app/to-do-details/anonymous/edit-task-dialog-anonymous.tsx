@@ -110,6 +110,7 @@ export function EditTaskDialogAnonymous({
               )}
               autoComplete="off"
               defaultValue={title}
+              data-test="edit-task-input"
             />
             {errors.newTitle && (
               <span

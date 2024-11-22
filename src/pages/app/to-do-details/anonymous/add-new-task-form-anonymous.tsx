@@ -89,6 +89,7 @@ export function AddNewTaskFormAnonymous() {
           type="text"
           placeholder="Nova tarefa"
           autoComplete="off"
+          data-test="new-task-input"
         />
         {errors.newTask && (
           <span className="absolute -bottom-5 left-2 text-xs">
