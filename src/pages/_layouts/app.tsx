@@ -25,7 +25,9 @@ export function AppLayout() {
         {isAnon ? <HeaderAnonymous /> : <Header />}
         <main
           className={twMerge(
-            isDesktop ? 'w-full p-2 md:p-10' : 'h-[calc(100%_-_55px)]',
+            isDesktop
+              ? 'w-[calc(100%_-_13rem)] p-2 md:p-10 lg:w-[calc(100%_-_18rem)]'
+              : 'h-[calc(100%_-_55px)]',
           )}
         >
           <Outlet />
